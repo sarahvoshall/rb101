@@ -1,9 +1,11 @@
+require "pry"
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
 def valid_number?(num)
-  num.to_i != 0
+ num.match(/[[:digit:]]/)
 end
 
 def operation_to_message(op)
