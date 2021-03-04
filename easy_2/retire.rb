@@ -12,4 +12,4 @@ current_year = Time.now.year
 difference = retire_age - age
 year = current_year + difference
 
-prompt("The year is 2021, you will retire in #{year}, in #{difference} years.")
+prompt("The year is #{current_year}, you will retire in #{year}, in #{difference} years.")
