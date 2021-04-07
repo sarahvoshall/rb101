@@ -6,4 +6,10 @@ hsh = {
   'marrow' => {type: 'vegetable', colors: ['green'], size: 'large'},
 }
 
-
+hsh.map do |item, details|
+  if details[:type] == 'fruit' 
+    details[:colors].map { |word| word.capitalize }
+  elsif details[:type] == 'vegetable'
+    details[:size].upcase
+  end 
+end 
