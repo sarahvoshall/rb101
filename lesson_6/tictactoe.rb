@@ -95,7 +95,7 @@ def computer_places_piece!(brd)
 	end 
 
 	if !square 
-		square = 5 
+		empty_squares(brd).include?(5) ? square = 5 : nil
 	end 
 
 	if !square 
@@ -104,6 +104,23 @@ def computer_places_piece!(brd)
 
 	brd[square] = COMPUTER_MARKER
 end
+
+def alternate_player(player)
+	if player == 'Computer'
+		player = 'Player'
+	elsif player == 'Player'
+		player = 'Computer'
+	end
+end 
+
+def place_piece!(brd, player)
+	case player
+	when "Player"
+		player_places_piece!(brd)
+	when "Computer"
+		computer_places_piece!(brd)
+	end
+end 
 
 def board_full?(brd)
 	empty_squares(brd).empty?
@@ -132,15 +149,32 @@ loop do
 	loop do 
 		board = initialize_board
 
-		loop do 
-			display_board(board)
+		prompt "Do you want to go first? (y / n)"
+		user_response = gets.chomp
 
-			player_places_piece!(board)
+		if user_response.downcase.start_with?('y')
+			current_player = 'Player'
+		elsif user_response.downcase.start_with?('n')
+			prompt "Do you want the computer to choose who goes first? (y / n)"
+			user_response2 = gets.chomp
+			if user_response2.downcase.start_with?('n') 
+				current_player = 'Computer'
+			else 
+				first_turn = [PLAYER_MARKER, COMPUTER_MARKER].sample
+				if first_turn == COMPUTER_MARKER
+					current_player = 'Computer'
+				else 
+					nil
+				end
+			end
+		end
+
+		loop do
+			display_board(board)
+			place_piece!(board, current_player)
+			current_player = alternate_player(current_player)
 			break if someone_won?(board) || board_full?(board)
-			
-			computer_places_piece!(board)
-			break if someone_won?(board) || board_full?(board)
-		end 
+		end
 
 		display_board(board)
 
@@ -150,7 +184,13 @@ loop do
 			prompt "It's a tie!"
 		end
 
-		detect_winner(board) == 'Player' ? player_win += 1 : computer_win =+ 1
+		case detect_winner(board) 
+		when 'Player' 
+			player_win += 1
+		when 'Computer'
+			computer_win += 1
+		end 
+
 		prompt "Player: #{player_win} Computer: #{computer_win}" 
 
 		break if computer_win == 5 || player_win == 5
