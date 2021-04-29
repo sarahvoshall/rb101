@@ -9,6 +9,20 @@ def rotate_rightmost_digits(integer, place)
 	(leftmost << rightmost).join.to_i
 end 
 
+def max_rotation(number)
+	place = number.digits.size
+	current_number = number 
+
+	while place > 0 do 
+		next_number = rotate_rightmost_digits(current_number, place)
+		current_number = next_number
+		place -= 1 
+	end 
+
+	current_number
+end
+		
+
 # after reviewing LS solution 
 # I can see that this is nice because I don't have to make so many variables...
 
@@ -25,3 +39,5 @@ rotate_rightmost_digits(735291, 4) == 732915
 rotate_rightmost_digits(735291, 5) == 752913
 rotate_rightmost_digits(735291, 6) == 352917
 
+p max_rotation(735291)
+p max_rotation(8_703_529_146)
