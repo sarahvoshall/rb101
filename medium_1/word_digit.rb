@@ -25,6 +25,10 @@ end
 # more comfortable with using .gsub... 
 
 def word_to_digit2(string)
-  
+  DIGITS.keys.each do |word|
+    string.gsub!(word, DIGITS[word])
+  end
+  string
+end 
 
-p word_to_digit('hello zero one two three')
+p word_to_digit2('hello zero one two three')
